@@ -73,7 +73,7 @@ export const getImgInfo = (url: string) => {
 export const downloadImg = (url: string, name: string) => {
     const a = document.createElement('a')
     const event = new MouseEvent('click', { bubbles: true, cancelable: true, view: window })
-    a.download = `黎·春节头像-${ name }`
+    a.download = `春节头像-${ name }`
     a.href = url
     a.dispatchEvent(event)
     a.remove()

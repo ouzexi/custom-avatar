@@ -11,7 +11,7 @@
     <header class="header">
         <div class="header-content">
             <div class="logo">
-                <img src="https://cdn.xiaoli.vip/project/logo.jpg" alt="">
+                <!-- <img src="https://cdn.xiaoli.vip/project/logo.jpg" alt=""> -->
                 定制头像
             </div>
             <!--滚动播放-->
@@ -101,7 +101,7 @@
         </a>
     </div>
     <div class="state">部分素材来源于网络，非商业用途，如有侵权请联系删除。</div>
-    <footer>© 2023 All rights reserved. Powered by 黎</footer>
+    <footer>© 2023 All rights reserved. Powered by 黎 and Prod by <a href="http://139.9.177.72/" target="_blank">ouzexi</a></footer>
 
     <input ref="uploadImgRef" id="uploadImg" type="file" accept="image/*" @change="uploadFile" style="position: absolute;top: -9999px;left: -9999px;" />
 
@@ -166,7 +166,7 @@ const userInfo = {
     path: 'img/custom-avatar'
 }
 
-const styleIndex = ref(1)
+const styleIndex = ref(0)
 const originAvatarUrl = ref<string>('')
 const selectFrameIndex = ref<number | null>(null)
 const frameUrl = ref<string>('')
