@@ -12,10 +12,10 @@
         <div class="header-content">
             <div class="logo">
                 <!-- <img src="https://cdn.xiaoli.vip/project/logo.jpg" alt=""> -->
-                定制头像
+                节日头像定制
             </div>
             <!--滚动播放-->
-            <transition name="notice" mode="out-in">
+            <!-- <transition name="notice" mode="out-in">
                 <div v-if="avatarList && avatarList.length" class="notice" :key="avatarList[noticeIndex].last_modified">
                     <p>
                         <span style="color: #409eff;">游客{{ (avatarList[noticeIndex].last_modified + '').slice(-5) }} </span>
@@ -26,7 +26,7 @@
                     </p>
                     <img :src="avatarList[noticeIndex].url" alt="">
                 </div>
-            </transition>
+            </transition> -->
         </div>
     </header>
     <div class="fasten"></div>
@@ -46,8 +46,8 @@
             <img class="more-right" src="./assets/img/more-right.png" alt="" @click="changeFrame(true)">
         </div>
         <div class="avatar-panel">
-            <el-button type="warning" plain @click="showRound  = !showRound">更换形状</el-button>
-            <el-button type="success" @click="uploadImgRef.click()">上传头像</el-button>
+            <el-button type="primary" plain @click="showRound  = !showRound">更换形状</el-button>
+            <el-button type="success" plain @click="uploadImgRef.click()">上传头像</el-button>
         </div>
         <div class="avatar-style">
             <div v-for="(item, index) in picList" :key="index" :class="styleIndex === index ? 'active' : ''"  @click="styleIndex = index">{{ item.name }}</div>
@@ -77,12 +77,12 @@
         </div>
 
         <div class="avatar-save">
+            <el-button type="primary" plain @click="createAvatar(false)">分享头像</el-button>
             <el-button type="success" plain @click="createAvatar(true)">保存头像</el-button>
-            <el-button type="primary" plain @click="createAvatar(false)">分享给朋友</el-button>
         </div>
     </main>
 
-    <div class="wall">
+    <!-- <div class="wall">
         <h2>头像墙({{ avatarList.length }})</h2>
         <div class="wall-list">
             <el-image v-for="(url, index) in avatarPageUrlList" :key="url" :src="url" :preview-src-list="avatarPageUrlList" :initial-index="index" :style="{ gridColumn: `span ${ avatarList[index].span}`, gridRow: `span ${ avatarList[index].span }` }" />
@@ -90,18 +90,18 @@
         <div v-if="pageNo * pageSize < avatarList.length" class="wall-more">
             <el-button type="info" link @click="loadMore">查看更多</el-button>
         </div>
-    </div>
+    </div> -->
 
-    <div class="stats">
+    <!-- <div class="stats">
         <p>本站访问人数:<span id="busuanzi_value_site_uv"></span></p>
         <p>本站访问总量:<span id="busuanzi_value_site_pv"></span></p>
         <a class="github" href="https://github.com/xiaoli1999/custom-avatar" target="_blank">
             <img src="./assets/img/github.png" alt="github">
             <span>github</span>
         </a>
-    </div>
+    </div> -->
     <div class="state">部分素材来源于网络，非商业用途，如有侵权请联系删除。</div>
-    <footer>© 2023 All rights reserved. Powered by 黎 and Prod by <a href="http://139.9.177.72/" target="_blank">ouzexi</a></footer>
+    <footer>© 2023 All rights reserved. Powered by 黎 and Prod by <a class="is-link" href="http://139.9.177.72/" target="_blank">ouzexi</a></footer>
 
     <input ref="uploadImgRef" id="uploadImg" type="file" accept="image/*" @change="uploadFile" style="position: absolute;top: -9999px;left: -9999px;" />
 
@@ -296,7 +296,7 @@ const loadMore = () => {
 onMounted(async () => {
     progress.close()
     await getAvatarList()
-    startNotice()
+    // startNotice()
 })
 
 onBeforeUnmount(() => clearInterval(noticeTimer))
@@ -641,11 +641,11 @@ main {
             cursor: pointer;
 
             &:hover {
-                color: #ff8f1f;
+                color: var(--el-color-primary);
             }
 
             &.active {
-                color: #ff8f1f;
+                color: var(--el-color-primary);
                 font-weight: 600;
             }
 
@@ -658,7 +658,7 @@ main {
                 margin: 0 auto;
                 width: 90%;
                 height: 3px;
-                background: #ff8f1f;
+                background: var(--el-color-primary);
                 border-radius: 2px;
                 content: "";
             }
@@ -727,13 +727,13 @@ main {
 
             /* 自定义滑块样式 */
             &::-webkit-scrollbar-thumb {
-                background-color: #ff8f1f20;
+                background-color: #409eff20;
                 border-radius: 6px;
             }
 
             &::-webkit-scrollbar-thumb:hover,
             &::-webkit-scrollbar-thumb:active {
-                background-color: #ff8f1faa;
+                background-color: #409effaa;
             }
         }
 
@@ -742,11 +742,11 @@ main {
             padding-bottom: 8px;
 
             .el-slider__bar {
-                background: #ff8f1f60;
+                background: #409eff60;
             }
 
             .el-slider__button {
-                border-color: #ff8f1f60;
+                border-color: #409eff60;
             }
         }
     }
@@ -1048,7 +1048,7 @@ footer,
 
                 /* 自定义滑块样式 */
                 &::-webkit-scrollbar-thumb {
-                    background-color: #ff8f1f80;
+                    background-color: #409eff80;
                     border-radius: 4px;
                 }
             }
