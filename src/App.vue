@@ -386,10 +386,12 @@ const handleGenBless = async () => {
     const { content } = await apiGenerate({
         prompt: blessing.value,
     })
-    blessing.value = content || '生成失败😭请联系作者或稍后再试';
+    blessing.value = content || '生成失败~请联系作者😭';
     createAvatar(false)
 
-    ElMessage.success('生成完毕~');
+    nextTick(() => {
+        blessing.value = '';
+    })
     blessingLoading.value = false;
 
 }
