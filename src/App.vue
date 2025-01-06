@@ -12,7 +12,8 @@
         <div class="header-content">
             <div class="logo">
                 <!-- <img src="https://cdn.xiaoli.vip/project/logo.jpg" alt=""> -->
-                节日头像定制
+                <p>节日头像定制</p>
+                <a class="is-link" href="http://139.9.177.72/" target="_blank">联系作者</a>
             </div>
             <!--滚动播放-->
             <!-- <transition name="notice" mode="out-in">
@@ -491,8 +492,10 @@ const save = async (isSave = true) => {
         height: 50px;
 
         .logo {
+            width: 100%;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             font-size: 16px;
             letter-spacing: 0.5px;
             font-weight: 600;
@@ -820,6 +823,10 @@ footer,
     padding-bottom: 8px;
     font-size: 13px;
     text-align: center;
+}
+
+.state {
+    margin-top: 20px;
 }
 
 .poster {
