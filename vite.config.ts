@@ -17,8 +17,10 @@ export default defineConfig(env => {
             // basicSsl(),
             vue(),
             eslintPlugin({
+                
                 cache: false, // 取消检查缓存
                 exclude: [ // 忽略的文件&目录
+                    '**/src/**',
                     '**/node_modules/**',
                     '**/dist/**',
                     '**/rabbit/**',
@@ -55,7 +57,8 @@ export default defineConfig(env => {
                     entryFileNames: 'static/js/[name]-[hash].js',
                     assetFileNames: 'static/[ext]/[name]-[hash].[ext]'
                 }
-            }
+            },
+            sourcemap: false
         },
         resolve: {
             alias: {

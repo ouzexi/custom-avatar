@@ -7,7 +7,6 @@
         <img class="bg-r-2" src="./assets/img/bg-r-2.png" alt="">
         <img class="bg-r-3" src="./assets/img/bg-r-3.png" alt="">
     </div>
-
     <header class="header">
         <div class="header-content">
             <div class="logo">
@@ -102,7 +101,11 @@
         </a>
     </div> -->
     <div class="state">部分素材来源于网络，非商业用途，如有侵权请联系删除。</div>
-    <footer>© 2023 All rights reserved. Powered by 黎 and Prod by <a class="is-link" href="http://139.9.177.72/" target="_blank">ouzexi</a></footer>
+    <footer>
+        © 2023 All rights reserved. Powered by 黎 and Prod by <a class="is-link" href="http://139.9.177.72/" target="_blank">Zexi Ou</a>
+        <br>
+        <p class="mt-10">AI Content Generator powered by <a class="is-link" href="https://www.deepseek.com/" target="_blank">DeepSeek</a></p>
+    </footer>
 
     <input ref="uploadImgRef" id="uploadImg" type="file" accept="image/*" @change="uploadFile" style="position: absolute;top: -9999px;left: -9999px;" />
 
@@ -112,7 +115,7 @@
         <img class="poster-avatar" :src="avatarUrl" alt="">
         <div class="poster-desc">
             <div>
-                <p>{{ picList[styleIndex].desc }}</p>
+                <p>{{ blessing || picList[styleIndex].desc }}</p>
                 <p>识别二维码，定制{{ picList[styleIndex].name }}头像！</p>
             </div>
             <img src="./assets/img/code.png" alt="">
@@ -123,16 +126,21 @@
         <div class="dialog-content">
             <img :src="avatarUrl" alt="">
             <div>
-                <el-button type="success" @click="save(true)">保存(移动端长按图片保存)</el-button>
+                <el-button type="success" @click="save(true)">保存头像 (移动端长按图片保存)</el-button>
             </div>
         </div>
     </el-dialog>
 
-    <el-dialog class="dialog" v-model="shareShow" title="分享海报" width="340px" align-center center style="border-radius: 8px;">
+    <el-dialog class="dialog" v-model="shareShow" title="分享海报" width="400px" align-center center style="border-radius: 8px;">
         <div class="dialog-content">
             <img :src="shareUrl" alt="">
             <div>
-                <el-button type="primary" @click="save(false)">分享(移动端长按图片转发给朋友)</el-button>
+                <el-button type="primary" @click="save(false)">分享海报 (移动端长按图片转发给朋友)</el-button>
+            </div>
+            <div class="bless" v-loading="blessingLoading">
+                <el-input type="textarea" maxlength="100" show-word-limit v-model="blessing"
+                placeholder="如：请生成一条关于蛇年新春的祝福语。祝福语要带有'花'字~"></el-input>
+                <el-button class="mt-10" type="primary" plain @click="handleGenBless">AI生成祝福语</el-button>
             </div>
         </div>
     </el-dialog>
@@ -154,6 +162,7 @@ import {picList, styleEnums} from '@/tools/picList'
 import {dayjs, ElMessage} from 'element-plus'
 import axios from 'axios'
 import html2canvas from 'html2canvas'
+import { apiGenerate } from './api'
 
 /* 初始化进度条 */
 progress.start()
@@ -296,7 +305,7 @@ const loadMore = () => {
 
 onMounted(async () => {
     progress.close()
-    await getAvatarList()
+    // await getAvatarList()
     // startNotice()
 })
 
@@ -308,8 +317,8 @@ const saveShow = ref(false)
 const shareShow = ref<boolean>(false)
 const fileNameObj = {}
 
-const createAvatar = async (isSave) => {
-    if (!originAvatarUrl.value) return ElMessage({ duration: 3600, message: '请上传头像!', type: 'warning' })
+const createAvatar = async (isSave: boolean) => {
+    if (!originAvatarUrl.value) return ElMessage({ duration: 3600, message: '请先上传头像!', type: 'warning' })
 
     loading.value = true
     isSave ? saveShow.value = true : shareShow.value = true
@@ -332,14 +341,15 @@ const createAvatar = async (isSave) => {
 
 
 
-    if (!fileNameObj[styleIndex.value]) {
+    /* if (!fileNameObj[styleIndex.value]) {
         await getAvatarList(false)
         fileNameObj[styleIndex.value] = `li-${ 1e14 - Date.now() }-${ picList[styleIndex.value].id }-${ avatarTotal.value + 1 }.png`
     }
 
-    const fileName = fileNameObj[styleIndex.value]
+    const fileName = fileNameObj[styleIndex.value] */
 
     /* 上传头像 */
+    /* 
     const uploadData = new FormData()
 
     const file = base64ToFile(avatarUrl.value, fileName, 'png')
@@ -350,17 +360,38 @@ const createAvatar = async (isSave) => {
     uploadData.append('authorization', authorization)
 
     axios({ method: 'POST', url: `${ userInfo.url }/${ atob(userInfo.bucket) }`, data: uploadData }).catch(() => ({}))
+    */
 }
 
 const save = async (isSave = true) => {
     try {
         /* 手动保存 */
-        const name = `黎-${ picList[styleIndex.value].name }${isSave ? '' : '分享'}-${Date.now()}`
+        const name = `${ picList[styleIndex.value].name }${isSave ? '' : '分享'}-${Date.now()}`
         downloadImg(isSave ? avatarUrl.value : shareUrl.value, name)
         ElMessage.success(isSave ? '保存成功' : '保存成功，快去分享给亲友吧~')
     } catch (e) {
         /* 捕获错误 */
     }
+}
+
+const blessing = ref<string>('')
+const blessingLoading = ref<boolean>(false)
+const handleGenBless = async () => {
+    if(!blessing.value) {
+        ElMessage.warning('请输入想生成的祝福语~');
+        return false;
+    }
+    blessingLoading.value = true;
+
+    const { content } = await apiGenerate({
+        prompt: blessing.value,
+    })
+    blessing.value = content || '生成失败😭请联系作者或稍后再试';
+    createAvatar(false)
+
+    ElMessage.success('生成完毕~');
+    blessingLoading.value = false;
+
 }
 </script>
 
@@ -745,11 +776,11 @@ main {
             padding-bottom: 8px;
 
             .el-slider__bar {
-                background: #409eff60;
+                background: #409eff;
             }
 
             .el-slider__button {
-                border-color: #409eff60;
+                border-color: #409eff;
             }
         }
     }
@@ -912,6 +943,11 @@ footer,
         > span {
             padding-left: 8px;
         }
+    }
+
+    .bless {
+        display: block;
+        text-align: right;
     }
 }
 

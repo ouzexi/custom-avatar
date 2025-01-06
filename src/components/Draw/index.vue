@@ -56,7 +56,7 @@ const initFabricControl = () => {
     const delImgElement = document.createElement('img')
     delImgElement.src = new URL('./icons/delete.png', import.meta.url).href
 
-    const size = 52
+    const size = 60
 
     const deleteControlHandel = (e, transform:any) => {
         const target = transform.target
