@@ -111,42 +111,6 @@ export const getAuthorization = (userInfo: any = {}) => {
 }
 
 /**
- * @function getUploadAuthorization 获取授权
- * @param { Object } userInfo 用户信息
- * @param { String } userInfo.bucket 文服务名称
- * @param { String } userInfo.name 用户名称
- * @param { String } userInfo.password 用户密码
- * @param { String } userInfo.path 上传途径
- * @return { String } policy 策略
- * @return { String } authorization 签名
- */
-export const getUploadAuthorization = (userInfo: any = {}) => {
-    const info = JSON.parse(JSON.stringify(userInfo))
-    info.bucket = atob(info.bucket)
-    info.name = atob(info.name)
-    info.password = atob(info.password)
-
-    const policyObj = {
-        bucket: info.bucket,
-        'save-key': `${ info.path }/{filename}{.suffix}`,
-        expiration: new Date().getTime() + 600 /* 过期时间，在当前时间+10分钟 */
-    }
-    const policy =  btoa(JSON.stringify(policyObj))
-
-    const { HexMD5, b64hamcsha1 }  = (window || {}) as any
-
-    /* 计算 Authorization */
-    const passwordMd5 = HexMD5.MD5(info.password).toString(HexMD5.enc.Hex)
-
-    /* [Method-请求方法, URI-请求路径, policy] */
-    const arr = ['POST', `/${ info.bucket }`, policy]
-
-    const authorization = `UPYUN ${ info.name }:${ b64hamcsha1(passwordMd5, arr.join('&')) }`
-
-    return { policy, authorization }
-}
-
-/**
  * @function base64ToFile
  * @description base64转file对象
  * @return { File } file对象

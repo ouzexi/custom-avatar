@@ -27,7 +27,8 @@ export const styleList: StyleInfoType[]  = [
         id: 'spring',
         name: '春节',
         desc: '辞暮尔尔，烟火年年~',
-        frameNum: 19,
+        // frameNum: 19,
+        frameNum: 2,
         frameList: [],
         markNum: 2,
         markList: []
@@ -36,28 +37,32 @@ export const styleList: StyleInfoType[]  = [
         id: 'moon',
         name: '中秋节',
         desc: '月光所至，万事胜意~',
-        frameNum: 7,
+        // frameNum: 7,
+        frameNum: 2,
         frameList: [],
-        markNum: 14,
+        // markNum: 14,
+        markNum: 2,
         markList: []
     },
     {
         id: 'national',
         name: '国庆节',
         desc: '生在红旗下，长在春风里~',
-        frameNum: 18,
+        // frameNum: 18,
+        frameNum: 2,
         frameList: [],
-        markNum: 7,
+        // markNum: 7,
+        markNum: 2,
         markList: []
     }
 ]
 
 export const picList = styleList.map(item => {
     const frameList = [...Array(item.frameNum).keys()].map(num => num + 1)
-    item.frameList = frameList.map(i => `https://cdn.xiaoli.vip/project/custom-avatar/img/${item.id}/frame/${i}.png`)
+    item.frameList = frameList.map(i => `http://www.cdn.ouzexi.cn/imgs/${item.id}/frame/${i}.png`)
 
     const markList = [...Array(item.markNum).keys()].map(num => num + 1)
-    item.markList = markList.map(i => `https://cdn.xiaoli.vip/project/custom-avatar/img/${item.id}/mark/${i}.png`)
+    item.markList = markList.map(i => `http://www.cdn.ouzexi.cn/imgs/${item.id}/mark/${i}.png`)
 
     return item
 })

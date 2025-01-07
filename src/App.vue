@@ -10,7 +10,6 @@
     <header class="header">
         <div class="header-content">
             <div class="logo">
-                <!-- <img src="https://cdn.xiaoli.vip/project/logo.jpg" alt=""> -->
                 <p>节日头像定制</p>
                 <a class="is-link" href="http://139.9.177.72/" target="_blank">联系作者</a>
             </div>
@@ -56,7 +55,8 @@
             <p>头像框</p>
             <div class="effect-list">
                 <div v-for="(item, index) in picList[styleIndex].frameList" :key="index" :class="`effect-item ${ item === frameUrl ? 'active' : '' }`" @click="selectFrame(index)">
-                    <img :src="`${ item }!avatar?${ dayjs().format('YYYY-MM-DD') }-${ Number(dayjs().format('HH')) < 12 ? 'last' : 'next' }`" alt="">
+                    <!-- <img :src="`${ item }!avatar?${ dayjs().format('YYYY-MM-DD') }-${ Number(dayjs().format('HH')) < 12 ? 'last' : 'next' }`" alt=""> -->
+                    <img :src="item" alt="">
                 </div>
             </div>
         </div>
@@ -103,8 +103,16 @@
     <div class="state">部分素材来源于网络，非商业用途，如有侵权请联系删除。</div>
     <footer>
         © 2023 All rights reserved. Powered by 黎 and Prod by <a class="is-link" href="http://139.9.177.72/" target="_blank">Zexi Ou</a>
-        <br>
+        <br/>
         <p class="mt-10">AI Content Generator powered by <a class="is-link" href="https://www.deepseek.com/" target="_blank">DeepSeek</a></p>
+        <br/>
+        <span id="busuanzi_container_site_pv">
+            本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        </span>
+        🥳
+        <span id="busuanzi_container_site_uv">
+            本站访客数<span id="busuanzi_value_site_uv"></span>人次
+        </span>
     </footer>
 
     <input ref="uploadImgRef" id="uploadImg" type="file" accept="image/*" @change="uploadFile" style="position: absolute;top: -9999px;left: -9999px;" />
@@ -116,7 +124,7 @@
         <div class="poster-desc">
             <div>
                 <p>{{ blessing || picList[styleIndex].desc }}</p>
-                <p>识别二维码，定制{{ picList[styleIndex].name }}头像！</p>
+                <p>识别二维码 定制{{ picList[styleIndex].name }}头像</p>
             </div>
             <img src="./assets/img/code.png" alt="">
         </div>
@@ -131,7 +139,7 @@
         </div>
     </el-dialog>
 
-    <el-dialog class="dialog" v-model="shareShow" title="分享海报" width="400px" align-center center style="border-radius: 8px;">
+    <el-dialog class="dialog" v-model="shareShow" title="分享海报" width="340px" align-center center style="border-radius: 8px;">
         <div class="dialog-content">
             <img :src="shareUrl" alt="">
             <div>
@@ -153,7 +161,6 @@ import {
     downloadImg,
     base64ToFile,
     getAuthorization,
-    getUploadAuthorization,
     calcOverTime
 } from '@/tools/common'
 import progress from './tools/progress'
@@ -161,6 +168,7 @@ import Draw from './components/Draw/index.vue'
 import {picList, styleEnums} from '@/tools/picList'
 import {dayjs, ElMessage} from 'element-plus'
 import axios from 'axios'
+import type { AxiosError } from 'axios'
 import html2canvas from 'html2canvas'
 import { apiGenerate } from './api'
 
@@ -262,19 +270,6 @@ const getAvatarList = async (isSet = true) => {
         const arr = name.split('-')
         avatarTotal.value = Number(arr[arr.length - 1] || 0)
     }
-
-    if (isSet) setAvatarList(files)
-}
-
-const setAvatarList = (files: any[]) => {
-    avatarList.value = files.map(i => ({
-        ...i,
-        id: i.name.split('-')[2],
-        url: `https://cdn.xiaoli.vip/img/custom-avatar/${ i.name }!avatar`,
-        span: createGridSpan()
-    }))
-
-    loadMore()
 }
 
 const createGridSpan = () => {
@@ -384,15 +379,18 @@ const handleGenBless = async () => {
     }
     blessingLoading.value = true;
 
-    const res: { status: number, data: any } = await apiGenerate({
+    const res: { status: number, data: any, error?: AxiosError } = await apiGenerate({
         prompt: blessing.value,
     })
+    console.log("🚀 ~ handleGenBless ~ res:", res)
     
     if(res.status === 200 && res.data) {
         const { data } = res.data || {};
         blessing.value = data.content || errTips;
         createAvatar(false)
         ElMessage.success('生成成功~');
+    } else if(res.error && res.error.status === 429) {
+        ElMessage.warning('您太快啦~请5秒后再试😭')
     } else {
         ElMessage.warning(errTips)
     }
@@ -888,19 +886,21 @@ footer,
 
     .poster-avatar {
         position: absolute;
-        top: 200px;
+        top: 150px;
         right: 0;
         left: 0;
         z-index: 10;
-        width: 230px;
-        height: 230px;
+        width: 220px;
+        height: 220px;
         border-radius: 10px;
         margin-inline: auto;
+        border: 5px solid #e45f4d;
+        padding: 5px;
     }
 
     .poster-desc {
         position: absolute;
-        bottom: 40px;
+        bottom: 230px;
         left: 0;
         z-index: 10;
         display: flex;
@@ -908,13 +908,13 @@ footer,
         align-items: center;
         width: 100%;
         height: 120px;
-        font-size: 20px;
+        font-size: 18px;
         color: #363636;
         font-weight: 600;
         letter-spacing: 1px;
 
         > div {
-            margin-left: 40px;
+            margin-left: 70px;
 
             > p {
                 line-height: 40px;
@@ -922,14 +922,16 @@ footer,
 
             > p:first-child {
                 color: #e45f4d;
+                font-size: 20px;
             }
         }
 
         > img {
-            margin-right: 40px;
-            width: 100px;
-            height: 100px;
+            margin-right: 70px;
+            width: 98px;
+            height: 98px;
             border-radius: 8px;
+            border: 2px solid #2f2f2f;
         }
     }
 }

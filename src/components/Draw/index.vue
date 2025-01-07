@@ -120,7 +120,8 @@ const frameName = 'frame'
 const addFrame = async (url = '') => {
     if (!url) return
 
-    const frameLayer: any = await drawImg(`${ url }!frame`)
+    // const frameLayer: any = await drawImg(`${ url }!frame`)
+    const frameLayer: any = await drawImg(url)
     frameLayer.set({
         left: Canvas.width / 2,
         top: Canvas.height / 2
