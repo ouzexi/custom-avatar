@@ -376,6 +376,7 @@ const save = async (isSave = true) => {
 
 const blessing = ref<string>('')
 const blessingLoading = ref<boolean>(false)
+const errTips = '生成失败~请联系作者😭';
 const handleGenBless = async () => {
     if(!blessing.value) {
         ElMessage.warning('请输入想生成的祝福语~');
@@ -383,11 +384,18 @@ const handleGenBless = async () => {
     }
     blessingLoading.value = true;
 
-    const { content } = await apiGenerate({
+    const res: { status: number, data: any } = await apiGenerate({
         prompt: blessing.value,
     })
-    blessing.value = content || '生成失败~请联系作者😭';
-    createAvatar(false)
+    
+    if(res.status === 200 && res.data) {
+        const { data } = res.data || {};
+        blessing.value = data.content || errTips;
+        createAvatar(false)
+        ElMessage.success('生成成功~');
+    } else {
+        ElMessage.warning(errTips)
+    }
 
     nextTick(() => {
         blessing.value = '';

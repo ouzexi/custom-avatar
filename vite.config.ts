@@ -11,7 +11,6 @@ import path from 'path'
 export default defineConfig(env => {
     const root = process.cwd()
     const envConfig = loadEnv(env.mode, root)
-    console.log(envConfig)
     return {
         plugins: [
             // basicSsl(),
@@ -92,7 +91,7 @@ export default defineConfig(env => {
                     changOrigin: true,
                     secure: false,
                     logLevel: 'error',
-                    rewrite: (path) => path.replace(/^\/api/, '')
+                    // rewrite: (path) => path.replace(/^\/api/, '')
                 }
             }
         }
