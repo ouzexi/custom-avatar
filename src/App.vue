@@ -130,7 +130,7 @@
         </div>
     </div>
 
-    <el-dialog class="dialog" v-model="saveShow" title="保存头像" width="340px" align-center center>
+    <el-dialog class="dialog" v-model="saveShow" title="保存头像" width="340px" align-center>
         <div class="dialog-content">
             <img :src="avatarUrl" alt="">
             <div>
@@ -139,8 +139,8 @@
         </div>
     </el-dialog>
 
-    <el-dialog class="dialog" v-model="shareShow" title="分享海报" width="340px" align-center center>
-        <div class="dialog-content">
+    <el-dialog class="dialog" v-model="shareShow" title="分享海报" width="340px" align-center>
+        <div class="dialog-content" v-loading="loading">
             <img :src="shareUrl" alt="">
             <div>
                 <el-button type="primary" @click="save(false)">分享海报 (移动端长按图片转发给朋友)</el-button>
@@ -382,7 +382,6 @@ const handleGenBless = async () => {
     const res: { status: number, data: any, error?: AxiosError } = await apiGenerate({
         prompt: blessing.value,
     })
-    console.log("🚀 ~ handleGenBless ~ res:", res)
     
     if(res.status === 200 && res.data) {
         const { data } = res.data || {};
