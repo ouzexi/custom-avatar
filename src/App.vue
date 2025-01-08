@@ -102,7 +102,7 @@
     </div> -->
     <div class="state">部分素材来源于网络，非商业用途，如有侵权请联系删除。</div>
     <footer>
-        © 2025 All rights reserved. Prod by <a class="is-link" href="https://github.com/ouzexi" target="_blank">ouzexi</a>
+        © 2025 All rights reserved. Produced by <a class="is-link" href="https://github.com/ouzexi" target="_blank">ouzexi</a>
         <br/>
         <p class="mt-10">AI Content Generator powered by <a class="is-link" href="https://www.deepseek.com/" target="_blank">DeepSeek</a></p>
         <br/>
@@ -872,7 +872,6 @@ footer,
     position: absolute;
     top: -500%;
     left: -500%;
-    left: 0;
     width: 500px;
     height: 750px;
 

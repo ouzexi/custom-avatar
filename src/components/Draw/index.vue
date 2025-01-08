@@ -1,5 +1,5 @@
 <template>
-    <div class="draw">
+    <div class="draw" v-loading="Loading">
         <canvas :id="CanvasId" />
     </div>
 </template>
@@ -119,7 +119,7 @@ const frameName = 'frame'
  */
 const addFrame = async (url = '') => {
     if (!url) return
-
+    Loading.value = true
     const frameLayer: any = await drawImg(`${ url }!frame`)
     frameLayer.set({
         left: Canvas.width / 2,
@@ -133,6 +133,7 @@ const addFrame = async (url = '') => {
 
     frameLayer.name = frameName
     addOrReplaceLayer(Canvas, frameLayer)
+    Loading.value = false
 }
 
 /**
@@ -154,7 +155,7 @@ const setFrameOpacity = (opacity = 1) => {
  */
 const addMark = async (url) => {
     if (!url) return
-
+    Loading.value = true
     const markLayer: any = await drawImg(url)
     markLayer.set({
         left: Canvas.width / 2,
@@ -165,6 +166,7 @@ const addMark = async (url) => {
 
     markLayer.name = `mark-${ createUuid() }`
     addOrReplaceLayer(Canvas, markLayer)
+    Loading.value = false
 }
 
 /**
