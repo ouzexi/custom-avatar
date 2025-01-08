@@ -364,9 +364,6 @@ a:active {
   opacity: 0;
   transform: translateY(-120%);
 }
-.el-dialog--center .el-dialog__body {
-  padding: 0 8px 16px !important;
-}
 @media only screen and (max-width: 768px) {
   #app {
     -webkit-tap-highlight-color: transparent;
@@ -379,4 +376,7 @@ a:active {
 }
 .is-link {
   color: #007aff !important;
+}
+.mt-10 {
+  margin-top: 10px;
 }

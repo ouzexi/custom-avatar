@@ -27,8 +27,7 @@ export const styleList: StyleInfoType[]  = [
         id: 'spring',
         name: '春节',
         desc: '辞暮尔尔，烟火年年~',
-        // frameNum: 19,
-        frameNum: 2,
+        frameNum: 17,
         frameList: [],
         markNum: 2,
         markList: []
@@ -37,22 +36,18 @@ export const styleList: StyleInfoType[]  = [
         id: 'moon',
         name: '中秋节',
         desc: '月光所至，万事胜意~',
-        // frameNum: 7,
-        frameNum: 2,
+        frameNum: 7,
         frameList: [],
-        // markNum: 14,
-        markNum: 2,
+        markNum: 14,
         markList: []
     },
     {
         id: 'national',
         name: '国庆节',
         desc: '生在红旗下，长在春风里~',
-        // frameNum: 18,
-        frameNum: 2,
+        frameNum: 18,
         frameList: [],
-        // markNum: 7,
-        markNum: 2,
+        markNum: 7,
         markList: []
     }
 ]

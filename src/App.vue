@@ -102,7 +102,7 @@
     </div> -->
     <div class="state">部分素材来源于网络，非商业用途，如有侵权请联系删除。</div>
     <footer>
-        © 2023 All rights reserved. Powered by 黎 and Prod by <a class="is-link" href="http://139.9.177.72/" target="_blank">Zexi Ou</a>
+        © 2025 All rights reserved. Prod by <a class="is-link" href="https://github.com/ouzexi" target="_blank">ouzexi</a>
         <br/>
         <p class="mt-10">AI Content Generator powered by <a class="is-link" href="https://www.deepseek.com/" target="_blank">DeepSeek</a></p>
         <br/>
@@ -130,7 +130,7 @@
         </div>
     </div>
 
-    <el-dialog class="dialog" v-model="saveShow" title="保存头像" width="340px" align-center center style="border-radius: 8px;">
+    <el-dialog class="dialog" v-model="saveShow" title="保存头像" width="340px" align-center center>
         <div class="dialog-content">
             <img :src="avatarUrl" alt="">
             <div>
@@ -139,14 +139,14 @@
         </div>
     </el-dialog>
 
-    <el-dialog class="dialog" v-model="shareShow" title="分享海报" width="340px" align-center center style="border-radius: 8px;">
+    <el-dialog class="dialog" v-model="shareShow" title="分享海报" width="340px" align-center center>
         <div class="dialog-content">
             <img :src="shareUrl" alt="">
             <div>
                 <el-button type="primary" @click="save(false)">分享海报 (移动端长按图片转发给朋友)</el-button>
             </div>
             <div class="bless" v-loading="blessingLoading">
-                <el-input type="textarea" maxlength="100" show-word-limit v-model="blessing"
+                <el-input type="textarea" maxlength="30" show-word-limit v-model="blessing"
                 placeholder="如：请生成一条关于蛇年新春的祝福语。祝福语要带有'花'字~"></el-input>
                 <el-button class="mt-10" type="primary" plain @click="handleGenBless">AI生成祝福语</el-button>
             </div>
@@ -872,6 +872,7 @@ footer,
     position: absolute;
     top: -500%;
     left: -500%;
+    left: 0;
     width: 500px;
     height: 750px;
 
@@ -886,7 +887,7 @@ footer,
 
     .poster-avatar {
         position: absolute;
-        top: 150px;
+        top: 155px;
         right: 0;
         left: 0;
         z-index: 10;
@@ -900,7 +901,7 @@ footer,
 
     .poster-desc {
         position: absolute;
-        bottom: 230px;
+        bottom: 215px;
         left: 0;
         z-index: 10;
         display: flex;
@@ -934,6 +935,10 @@ footer,
             border: 2px solid #2f2f2f;
         }
     }
+}
+
+.dialog {
+    border-radius: 8px;
 }
 
 .dialog-content {
