@@ -52,19 +52,7 @@ export const styleList: StyleInfoType[]  = [
     }
 ]
 
-// 生产
 export const picList = styleList.map(item => {
-    const frameList = [...Array(item.frameNum).keys()].map(num => num + 1)
-    item.frameList = frameList.map(i => `http://www.cdn.ouzexi.cn/imgs/${item.id}/frame/${i}.png`)
-
-    const markList = [...Array(item.markNum).keys()].map(num => num + 1)
-    item.markList = markList.map(i => `http://www.cdn.ouzexi.cn/imgs/${item.id}/mark/${i}.png`)
-
-    return item
-})
-
-// 本地
-/* export const picList = styleList.map(item => {
     const frameList = [...Array(item.frameNum).keys()].map(num => num + 1)
     item.frameList = frameList.map(i => `https://cdn.xiaoli.vip/project/custom-avatar/img/${item.id}/frame/${i}.png`)
 
@@ -72,4 +60,4 @@ export const picList = styleList.map(item => {
     item.markList = markList.map(i => `https://cdn.xiaoli.vip/project/custom-avatar/img/${item.id}/mark/${i}.png`)
 
     return item
-}) */
+})
