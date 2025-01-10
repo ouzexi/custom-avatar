@@ -10,7 +10,10 @@
     <header class="header">
         <div class="header-content">
             <div class="logo">
-                <p>节日头像定制</p>
+                <section class="logo-bgm">
+                    <p @click="shootConfetti">节日头像定制</p>
+                    <Bgm ref="BgmRef"/>
+                </section>
                 <a class="is-link" href="http://139.9.177.72/" target="_blank">联系作者</a>
             </div>
             <!--滚动播放-->
@@ -77,7 +80,7 @@
         </div>
 
         <div class="avatar-save">
-            <el-button type="primary" plain @click="createAvatar(false)">分享头像</el-button>
+            <el-button type="primary" plain @click="createAvatar(false)">生成海报</el-button>
             <el-button type="success" plain @click="createAvatar(true)">保存头像</el-button>
         </div>
     </main>
@@ -164,14 +167,15 @@ import {
     calcOverTime
 } from '@/tools/common'
 import progress from './tools/progress'
+import shootConfetti from './tools/confetti'
 import Draw from './components/Draw/index.vue'
+import Bgm from './components/Bgm/index.vue'
 import {picList, styleEnums} from '@/tools/picList'
-import {dayjs, ElMessage} from 'element-plus'
+import {dayjs, ElMessage, ElMessageBox} from 'element-plus'
 import axios from 'axios'
 import type { AxiosError } from 'axios'
 import html2canvas from 'html2canvas'
 import { apiGenerate } from './api'
-
 /* 初始化进度条 */
 progress.start()
 
@@ -184,6 +188,8 @@ const userInfo = {
     path: 'img/custom-avatar'
 }
 
+const warnTips = '请先上传头像！';
+
 const styleIndex = ref(0)
 const originAvatarUrl = ref<string>('')
 const selectFrameIndex = ref<number | null>(null)
@@ -191,6 +197,7 @@ const frameUrl = ref<string>('')
 const showRound = ref<boolean>(false)
 const avatarTotal = ref(0)
 const DrawRef = ref()
+const BgmRef = ref()
 const uploadImgRef = ref()
 const loading = ref(false)
 
@@ -213,7 +220,7 @@ const uploadFile = async (e: any) => {
 }
 
 const changeFrame = (isNext) => {
-    if (!originAvatarUrl.value) return ElMessage.warning('请先上传头像！')
+    if (!originAvatarUrl.value) return ElMessage.warning(warnTips)
 
     const frameList =  picList[styleIndex.value].frameList
     if (isNext) {
@@ -229,7 +236,7 @@ const selectFrame = (index: number) => {
     if (frameTimer) clearTimeout(frameTimer)
 
     frameTimer = setTimeout(() => {
-        if (!originAvatarUrl.value) return ElMessage.warning('请先上传头像！')
+        if (!originAvatarUrl.value) return ElMessage.warning(warnTips)
 
         opacity.value = 1
         selectFrameIndex.value = index
@@ -243,7 +250,7 @@ const selectMark = (index: number) => {
     if (markTimer) clearTimeout(markTimer)
 
     markTimer = setTimeout(() => {
-        if (!originAvatarUrl.value) return ElMessage.warning('请先上传头像！')
+        if (!originAvatarUrl.value) return ElMessage.warning(warnTips)
 
         const markUrl = picList[styleIndex.value].markList[index]
         DrawRef.value.addMark(markUrl)
@@ -306,6 +313,20 @@ onMounted(async () => {
 
 onBeforeUnmount(() => clearInterval(noticeTimer))
 
+const initTips = () => {
+    ElMessageBox.alert('资源首次加载时间稍长，请耐心等待...<br/>或关闭WIFI，使用移动数据流量访问<br/>祝各位用户新年快乐~~🥳🧨🧨🧨', '', {
+        center: true,
+        confirmButtonText: '朕已阅，退下吧',
+        dangerouslyUseHTMLString: true,
+        showClose: false,
+        callback: () => {
+            BgmRef.value && BgmRef.value.toggleMusic()
+            shootConfetti()
+        }
+    })
+}
+initTips()
+
 const avatarUrl = ref('')
 const shareUrl = ref('')
 const saveShow = ref(false)
@@ -313,7 +334,7 @@ const shareShow = ref<boolean>(false)
 const fileNameObj = {}
 
 const createAvatar = async (isSave: boolean) => {
-    if (!originAvatarUrl.value) return ElMessage({ duration: 3600, message: '请先上传头像!', type: 'warning' })
+    if (!originAvatarUrl.value) return ElMessage({ duration: 3600, message: warnTips, type: 'warning' })
 
     loading.value = true
     isSave ? saveShow.value = true : shareShow.value = true
@@ -330,6 +351,8 @@ const createAvatar = async (isSave: boolean) => {
                 shareUrl.value = canvas.toDataURL('image/png')
                 shareShow.value = true
                 loading.value = false
+
+                shootConfetti()
             })
         })
     }
@@ -537,6 +560,11 @@ const handleGenBless = async () => {
             font-size: 16px;
             letter-spacing: 0.5px;
             font-weight: 600;
+
+            &-bgm {
+                display: flex;
+                align-items: center;
+            }
 
             > img {
                 margin-right: 12px;

@@ -29,7 +29,7 @@ export const styleList: StyleInfoType[]  = [
         desc: '辞暮尔尔，烟火年年~',
         frameNum: 17,
         frameList: [],
-        markNum: 2,
+        markNum: 19,
         markList: []
     },
     {
