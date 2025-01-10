@@ -306,6 +306,7 @@ const loadMore = () => {
 }
 
 onMounted(async () => {
+    initTips()
     progress.close()
     // await getAvatarList()
     // startNotice()
@@ -325,7 +326,6 @@ const initTips = () => {
         }
     })
 }
-initTips()
 
 const avatarUrl = ref('')
 const shareUrl = ref('')
